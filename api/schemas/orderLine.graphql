@@ -1,0 +1,44 @@
+type OrderLine {
+	id: ID!
+	item: Item!
+	order: Order!
+	quantity: Int
+	customerComments: String
+
+	status: LineStatus
+	createdAt: DateTime
+	canceledAt: DateTime
+	startedAt: DateTime
+	finishedAt: DateTime
+	deliveredAt: DateTime
+}
+
+enum LineStatus {
+	PENDING
+	DELIVERED
+	PROCESSING
+	CANCELED
+	DONE
+	DELAYED
+}
+
+type Query {
+	lines: [OrderLine!]
+	line(id: ID!): OrderLine
+}
+
+type Mutation {
+	createLine(line: lineInput!): OrderLine
+	deleteLine(id: ID!): Int!
+	lineCancel(id: ID!): [Int!]
+	lineStart(id: ID!): [Int!]
+	lineFinish(id: ID!): [Int!]
+	lineDeliver(id: ID!): [Int!]
+}
+
+input lineInput {
+	orderId: ID!
+	itemId: ID!
+	quantity: Int!
+	customerComments: String
+}

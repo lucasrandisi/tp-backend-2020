@@ -1,0 +1,28 @@
+type Order {
+	id: ID!
+	lines: [OrderLine]
+	table: Table
+	staff: Staff
+
+	status: OrderStatus
+	createdAt: DateTime
+	closedAt: DateTime
+	paidAt: DateTime
+}
+
+enum OrderStatus {
+	OPEN
+	CLOSED
+	PAID
+}
+
+type Query {
+	orders: [Order!]!
+	order(id: ID!): Order
+}
+
+type Mutation {
+	createOrder(tableId: ID): Order!
+	closeOrder(id: ID!): [Int]!
+	deleteOrder(id: ID!): Int!
+}
