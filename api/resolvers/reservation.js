@@ -8,7 +8,39 @@ export default {
 	},
 	Query: {
 		reservation: (parent, { id }, { db }) => db.reservation.findByPk(id),
-		reservations: (parent, args, { db }) => db.reservation.findAll(),
+
+		/** If not passed any filters, it returns all reservations ordered by reservation date.
+		 * May be filtered by party size, between a given datetime range
+		 * @param {*} args filters
+		 * @param {*} param2 Database context
+		 * @returns Reservations
+		 */
+		reservations: async (_, args, { db }) => {
+			if (!args.filter) {
+				return db.reservation.findAll({
+					order: ['reservationDateTime'],
+				});
+			}
+
+			const { size, from, to } = args.filter;
+
+			const reservations = await db.reservation.findAll({
+				where: {
+					cancelationDateTime: null,
+					reservationDateTime: {
+						[Op.between]: [from, to],
+					},
+				},
+				include: [
+					{
+						model: db.table,
+						where: { size: { [Op.gte]: size } },
+					},
+				],
+			});
+			return reservations;
+		},
+
 		reservationsBySize: async (parent, { size }, { db }) => {
 			const tablesLen = (
 				await db.table.findAll({
@@ -47,6 +79,32 @@ export default {
 			}
 			if (!reservedDates.length) return ['available'];
 			return reservedDates;
+		},
+
+		/** Returns the reservations booked for a given day
+		 * @param {size} Integer Number of people to seat
+		 * @param {date} DateTime Date to check
+		 * @returns Reservations booked for the given day
+		 */
+		reservationsDay: async (_, { size, date }, { db }) => {
+			const day = moment(date).format('YYYY-MM-DD');
+			const tomorrow = moment(day).add(1, 'days');
+
+			const reservations = await db.reservation.findAll({
+				where: {
+					cancelationDateTime: null,
+					reservationDateTime: {
+						[Op.between]: [day, tomorrow],
+					},
+				},
+				include: [
+					{
+						model: db.table,
+						where: { size: { [Op.gte]: size } },
+					},
+				],
+			});
+			return reservations;
 		},
 	},
 

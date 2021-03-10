@@ -22,7 +22,8 @@ input ReservationInput {
 # Types
 type Query {
 	reservation(id: ID!): Reservation
-	reservations: [Reservation!]!
+	reservations(filter: ReservationFilter): [Reservation!]!
+	reservationsDay(size: Int!, date: DateTime!): [Reservation]!
 	reservationsBySize(size: Int!): [DateTime]
 }
 
@@ -30,4 +31,12 @@ type Mutation {
 	createReservation(reservation: ReservationInput!): Reservation
 	updateReservation(id: ID!, reservation: ReservationInput!): Reservation
 	deleteReservation(id: ID!): Int!
+}
+
+input ReservationFilter {
+	size: Int!
+	from: DateTime!
+	to: DateTime!
+	# Time window (in minutes) that is expected for customers to occupy a table
+	window: Int = 45
 }
