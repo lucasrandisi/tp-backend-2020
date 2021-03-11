@@ -9,17 +9,6 @@ type Reservation {
 	table: Table!
 }
 
-# Inputs
-input ReservationInput {
-	customerName: String!
-	phone: String
-	email: String
-	partySize: Int!
-	reservationDateTime: DateTime!
-	tableId: ID
-}
-
-# Types
 type Query {
 	reservation(id: ID!): Reservation
 	reservations(filter: ReservationFilter): [Reservation!]!
@@ -29,7 +18,7 @@ type Query {
 
 type Mutation {
 	createReservation(reservation: ReservationInput!): Reservation
-	updateReservation(id: ID!, reservation: ReservationInput!): Reservation
+	updateReservation(id: ID!, reservation: ReservationEditInput!): Reservation
 	deleteReservation(id: ID!): Int!
 }
 
@@ -37,6 +26,20 @@ input ReservationFilter {
 	size: Int!
 	from: DateTime!
 	to: DateTime!
-	# Time window (in minutes) that is expected for customers to occupy a table
-	window: Int = 45
+}
+
+input ReservationInput {
+	customerName: String!
+	phone: String
+	email: String
+	partySize: Int!
+	reservationDateTime: DateTime!
+	tableId: ID
+}
+
+input ReservationEditInput {
+	customerName: String
+	phone: String
+	email: String
+	cancelationDateTime: DateTime
 }

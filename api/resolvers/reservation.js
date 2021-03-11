@@ -29,7 +29,7 @@ export default {
 
 			const { size, from, to } = args.filter;
 
-			const reservations = await db.reservation.findAll({
+			return db.reservation.findAll({
 				where: {
 					cancelationDateTime: null,
 					reservationDateTime: {
@@ -43,7 +43,6 @@ export default {
 					},
 				],
 			});
-			return reservations;
 		},
 
 		reservationsBySize: async (parent, { size }, { db }) => {
@@ -131,12 +130,6 @@ export default {
 									[Op.between]: [from, to],
 								},
 							},
-							include: [
-								{
-									model: db.table,
-									where: { size: { [Op.gte]: partySize } },
-								},
-							],
 						})
 						.then((res) => {
 							return res.map((row) => {
@@ -168,21 +161,14 @@ export default {
 			}
 		},
 
-		updateReservation: async (parent, { id, reservation }, { db }) => {
-			const table = await db.table.findByPk(reservation.tableId);
-
-			if (!table) {
-				// ToDo: Throw Exception table not found.
-			}
-
+		updateReservation: async (_, { id, reservation }, { db }) => {
 			await db.reservation.update(reservation, {
 				where: { id },
 			});
-			const updated = await db.reservation.findByPk(reservation.tableId);
-			return updated;
+			return db.reservation.findByPk(id);
 		},
 
-		deleteReservation: (parent, { id }, { db }) =>
+		deleteReservation: (_, { id }, { db }) =>
 			db.reservation.destroy({
 				where: { id },
 			}),
