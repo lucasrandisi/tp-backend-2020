@@ -1,5 +1,10 @@
 import { Op } from 'sequelize';
 import moment from 'moment';
+import { ValidationError } from 'apollo-server-errors';
+
+// Mean time (in minutes) that a customer spent dining.
+// This is the time window a table is occupied
+const MEAN_TIME_CUSTOMER = 45;
 
 export default {
 	Reservation: {
@@ -109,35 +114,58 @@ export default {
 	},
 
 	Mutation: {
-		createReservation: async (parent, { reservation }, { db }) => {
-			const table = await db.table.findOne({
-				where: {
-					size: {
-						[Op.gte]: reservation.partySize,
-					},
-				},
-				include: [
-					{
-						model: db.reservation,
-						where: {
-							cancelationDateTime: null,
-							reservationDateTime: {
-								[Op.ne]: reservation.reservationDateTime,
+		createReservation: async (_, { reservation }, { db }) => {
+			const { reservationDateTime, partySize } = reservation;
+
+			const from = moment(reservationDateTime);
+			const to = moment(from).add(MEAN_TIME_CUSTOMER, 'm');
+
+			try {
+				return await db.sequelize.transaction(async () => {
+					// Find all other reservations in range
+					const reservationsInRange = await db.reservation
+						.findAll({
+							where: {
+								cancelationDateTime: null,
+								reservationDateTime: {
+									[Op.between]: [from, to],
+								},
 							},
+							include: [
+								{
+									model: db.table,
+									where: { size: { [Op.gte]: partySize } },
+								},
+							],
+						})
+						.then((res) => {
+							return res.map((row) => {
+								return row.tableId;
+							});
+						});
+
+					// Find smallest available table in datetime range (not reserved)
+					const availableTable = await db.table.findOne({
+						where: {
+							id: { [Op.notIn]: reservationsInRange },
+							size: { [Op.gte]: partySize },
 						},
-					},
-				],
-			});
+						order: ['size'],
+					});
 
-			if (!table) {
-				// ToDo: Throw Excepction table not found.
+					if (!availableTable) {
+						throw new ValidationError('No available tables.');
+					}
+
+					return db.reservation.create({
+						...reservation,
+						tableId: availableTable.id,
+					});
+				});
+			} catch (error) {
+				// Transaction failed, rollback
+				throw new Error(error);
 			}
-
-			const newReservation = await db.reservation.create({
-				...reservation,
-				tableId: table.id,
-			});
-			return newReservation;
 		},
 
 		updateReservation: async (parent, { id, reservation }, { db }) => {
