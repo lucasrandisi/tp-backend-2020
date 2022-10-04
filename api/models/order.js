@@ -17,6 +17,7 @@ export default (sequelize, DataTypes) => {
 		Order.hasMany(models.line);
 		Order.belongsTo(models.table);
 		Order.belongsTo(models.staff);
+		Order.belongsTo(models.reservation);
 	};
 
 	return Order;

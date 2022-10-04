@@ -1,6 +1,7 @@
 type Order {
 	id: ID!
 	lines: [OrderLine]
+	reservation: Reservation
 	table: Table
 	staff: Staff
 

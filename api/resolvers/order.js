@@ -2,6 +2,8 @@ export default {
 	Order: {
 		table: ({ tableId }, args, { db }) =>
 			db.table.findOne({ where: { id: tableId } }),
+		reservation: ({ reservationId }, args, { db }) =>
+			db.reservation.findOne({ where: { id: reservationId } }),
 		lines: (parent, args, { db }) =>
 			db.line.findAll({ where: { orderId: parent.id } }),
 		staff: ({ staffId }, args, { db }) =>
