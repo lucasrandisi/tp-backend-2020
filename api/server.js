@@ -5,6 +5,8 @@ import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import path from 'path';
 import db from './models';
 
+require('dotenv').config();
+
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schemas')));
 const resolvers = mergeResolvers(
 	fileLoader(path.join(__dirname, './resolvers'))
