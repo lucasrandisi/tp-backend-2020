@@ -15,6 +15,7 @@ input TableInput {
 type Query {
 	table(id: ID!): Table
 	tables: [Table!]!
+	max_table: Int!
 }
 
 type Mutation {

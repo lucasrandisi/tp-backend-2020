@@ -33,6 +33,7 @@ export default {
 	Query: {
 		table: (parent, { id }, { db }) => db.table.findByPk(id),
 		tables: (parent, args, { db }) => db.table.findAll(),
+		max_table: (parent, args, { db }) => db.table.max('size'),
 	},
 
 	Mutation: {
