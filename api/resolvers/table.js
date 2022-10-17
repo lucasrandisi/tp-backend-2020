@@ -1,7 +1,11 @@
 import { Op } from 'sequelize';
 import moment from 'moment';
-import { getCurrentDate, allTimes } from '../utils/util';
-import { getTablesWithOrders, getTablesWithReservation } from './util';
+import {
+	getCurrentDate,
+	allTimes,
+	getTablesWithOrders,
+	getTablesWithReservation,
+} from '../utils/util';
 
 export default {
 	Table: {
@@ -64,7 +68,7 @@ export default {
 
 			// eslint-disable-next-line
 			for (let i = 0; i < times.length; i++) {
-				const actualDate = `${date  } ${  times[i]}`;
+				const actualDate = `${date} ${times[i]}`;
 				// eslint-disable-next-line
 				const tablesWithRes = await getTablesWithReservation(
 					db,
