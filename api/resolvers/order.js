@@ -1,3 +1,5 @@
+import { getCurrentDate } from '../utils/util';
+
 export default {
 	Order: {
 		table: ({ tableId }, args, { db }) =>
@@ -19,13 +21,24 @@ export default {
 		order: (parent, { id }, { db }) => db.order.findByPk(id),
 	},
 	Mutation: {
-		createOrder: (parent, { tableId }, { db }) =>
-			db.order.create({ tableId }),
-
+		createOrder: (parent, { tableId, resId }, { db }) => {
+			if (resId !== 'undefined') {
+				return db.order.create({
+					reservationId: resId,
+					tableId,
+					createdAt: getCurrentDate(),
+				});
+			} 
+				return db.order.create({
+					tableId,
+					createdAt: getCurrentDate(),
+				});
+			
+		},
 		closeOrder: (_, { id }, { db }) =>
 			db.order.update(
 				{
-					paidAt: Date.now(),
+					paidAt: getCurrentDate(),
 				},
 				{
 					where: { id },

@@ -24,7 +24,19 @@ export default {
 		item: (parent, { id }, { db }) => db.item.findByPk(id),
 	},
 	Mutation: {
-		createItem: (parent, { item }, { db }) => db.item.create({ ...item }),
+		createItem: (parent, { item }, { db }) => {
+			return db.item.create({ ...item }).then(async (i) => {
+				if (i && item.categoriesId) {
+					await i.setCategories(item.categoriesId);
+				}
+
+				i.update({
+					...item,
+				});
+
+				return i;
+			});
+		},
 		updateItem: (parent, { id, itemInput }, { db }) => {
 			return db.item.findByPk(id).then(async (item) => {
 				if (item) {
