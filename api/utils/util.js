@@ -67,26 +67,14 @@ export function getTablesWithReservation(db, size, date) {
 	});
 }
 
-export const allTimes = [
-	'08:00',
-	'08:30',
-	'09:00',
-	'09:30',
-	'10:00',
-	'10:30',
-	'11:00',
-	'11:30',
-	'12:00',
-	'12:30',
-	'13:00',
-	'13:30',
-	'19:00',
-	'19:30',
-	'20:00',
-	'20:30',
-	'21:00',
-	'21:30',
-	'22:00',
-	'22:30',
-	'23:00',
-];
+export const calculateTimes = () => {
+	const allTimes = [];
+	// eslint-disable-next-line
+	for (let i = 8; i < 24; i++) {
+		// eslint-disable-next-line
+		for (let j = 0; j < 2; j++) {
+			allTimes.push(`${i}:${j === 0 ? `00` : 30 * j}`);
+		}
+	}
+	return allTimes;
+};

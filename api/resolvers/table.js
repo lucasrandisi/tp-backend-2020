@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import moment from 'moment';
 import {
-	allTimes,
+	calculateTimes,
 	getTablesWithOrders,
 	getTablesWithReservation,
 } from '../utils/util';
@@ -50,6 +50,7 @@ export default {
 		tables: (parent, args, { db }) => db.table.findAll(),
 		max_table: (parent, args, { db }) => db.table.max('size'),
 		tablesAvailableByDateSize: async (parent, { date, size }, { db }) => {
+			const allTimes = calculateTimes();
 			const allTables = await db.table.findAll({
 				where: {
 					size: { [Op.gte]: size },
