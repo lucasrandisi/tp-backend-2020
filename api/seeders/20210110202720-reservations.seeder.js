@@ -10,7 +10,7 @@ module.exports = {
 				CustomerName: 'Lucas',
 				partySize: 2,
 				reservationDateTime: moment()
-					.add(1, 'hours')
+					.add(3, 'hours')
 					.set(time)
 					.toDate(),
 				tableId: 1,
@@ -80,7 +80,7 @@ module.exports = {
 				CustomerName: 'Cholo',
 				partySize: 3,
 				reservationDateTime: moment()
-					.add(5, 'hours')
+					.add(7, 'hours')
 					.set(halfTime)
 					.toDate(),
 				tableId: 5,
@@ -100,20 +100,20 @@ module.exports = {
 				phone: '3412111622',
 				email: 'tito@hotmail.com',
 			},
-			{
-				id: 8,
-				CustomerName: 'Hernán',
-				partySize: 6,
-				reservationDateTime: moment()
-					.add(2, 'hours')
-					.set(halfTime)
-					.toDate(),
-				tableId: 7,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-				phone: '3413333622',
-				email: 'hernan@hotmail.com',
-			},
+			// {
+			// 	id: 8,
+			// 	CustomerName: 'Hernán',
+			// 	partySize: 6,
+			// 	reservationDateTime: moment()
+			// 		.add(2, 'hours')
+			// 		.set(halfTime)
+			// 		.toDate(),
+			// 	tableId: 7,
+			// 	createdAt: new Date(),
+			// 	updatedAt: new Date(),
+			// 	phone: '3413333622',
+			// 	email: 'hernan@hotmail.com',
+			// },
 		]);
 	},
 
