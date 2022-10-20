@@ -24,6 +24,17 @@ input itemInput {
 	title: String
 	desc: String
 	cookTime: Int
+	servings: Int
+	pricePerUnit: Int
+	categoriesId: [ID!]
+	ingredientsId: [ID!]
+}
+
+input itemEditInput {
+	id: ID!
+	title: String
+	desc: String
+	cookTime: Int
 	servings: Float
 	pricePerUnit: Float
 	categoriesId: [ID!]

@@ -1,5 +1,7 @@
 type Staff {
 	id: ID!
+	username: String!
+	password: String!
 	firstName: String!
 	lastName: String!
 	phone: String
@@ -22,6 +24,8 @@ type Mutation {
 
 # Input
 input StaffInput {
+	username: String!
+	password: String!
 	firstName: String!
 	lastName: String!
 	phone: String

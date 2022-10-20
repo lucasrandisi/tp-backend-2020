@@ -3,7 +3,7 @@ module.exports = {
 		return queryInterface.bulkInsert('tables', [
 			{ id: 1, size: 2 },
 			{ id: 2, size: 2 },
-			{ id: 3, size: 2 },
+			{ id: 3, size: 4 },
 			{ id: 4, size: 4 },
 			{ id: 5, size: 4 },
 			{ id: 6, size: 4 },

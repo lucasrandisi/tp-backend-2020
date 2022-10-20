@@ -5,9 +5,9 @@ module.exports = (sequelize, DataTypes) => {
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		customerName:{
+		customerName: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: false,
 		},
 		phone: {
 			type: DataTypes.STRING,
@@ -21,17 +21,17 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		reservationDateTime: {
 			type: DataTypes.DATE,
-			allowNull: false
+			allowNull: false,
 		},
 		cancelationDateTime: {
 			type: DataTypes.DATE,
-		}
+		},
 	});
 
 	Reservation.associate = (models) => {
 		Reservation.belongsTo(models.table);
+		Reservation.hasOne(models.order);
 	};
 
 	return Reservation;
 };
-   

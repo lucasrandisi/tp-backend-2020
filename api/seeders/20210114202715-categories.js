@@ -1,5 +1,3 @@
-
-
 module.exports = {
 	up: (queryInterface) => {
 		return queryInterface.bulkInsert('categories', [
@@ -48,6 +46,18 @@ module.exports = {
 			{
 				id: 8,
 				desc: 'Sin gluten',
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+			{
+				id: 9,
+				desc: 'Sopas',
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+			{
+				id: 10,
+				desc: 'Entradas',
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},

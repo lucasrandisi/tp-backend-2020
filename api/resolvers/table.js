@@ -1,5 +1,10 @@
 import { Op } from 'sequelize';
 import moment from 'moment';
+import {
+	calculateTimes,
+	getTablesWithOrders,
+	getTablesWithReservation,
+} from '../utils/util';
 
 export default {
 	Table: {
@@ -10,14 +15,24 @@ export default {
 			}),
 		nextReservation: (parent, _, { db }) =>
 			db.reservation.findOne({
-				where: {
-					tableId: parent.id,
-					cancelationDateTime: null,
-					reservationDateTime: {
-						[Op.lt]: moment().add(4, 'hours'),
-						[Op.gt]: moment().subtract(1, 'hours'),
+				where: [
+					{
+						tableId: parent.id,
+						cancelationDateTime: null,
+						reservationDateTime: {
+							[Op.lt]: moment().add(3, 'hours'),
+							[Op.gt]: moment().subtract(1, 'hours'),
+						},
 					},
-				},
+					db.sequelize.where(db.sequelize.col('order.id'), null),
+				],
+				include: [
+					{
+						model: db.order,
+						attributes: [],
+						required: false,
+					},
+				],
 			}),
 		reservations: (parent, _, { db }) =>
 			db.reservation.findAll({
@@ -33,8 +48,58 @@ export default {
 	Query: {
 		table: (parent, { id }, { db }) => db.table.findByPk(id),
 		tables: (parent, args, { db }) => db.table.findAll(),
-	},
+		max_table: (parent, args, { db }) => db.table.max('size'),
+		tablesAvailableByDateSize: async (parent, { date, size }, { db }) => {
+			const allTimes = calculateTimes();
+			const allTables = await db.table.findAll({
+				where: {
+					size: { [Op.gte]: size },
+				},
+			});
 
+			let times = [...allTimes];
+
+			const onlyDate = moment(date).format('YYYY-MM-DD');
+			if (onlyDate === moment().format('YYYY-MM-DD')) {
+				const actualTime = moment().format('HH:mm');
+				times = allTimes.filter((t) => t > actualTime);
+			}
+
+			const availableTimes = [];
+
+			// eslint-disable-next-line
+			for (let i = 0; i < times.length; i++) {
+				const actualDate = `${onlyDate} ${times[i]}`;
+				// eslint-disable-next-line
+				const tablesWithRes = await getTablesWithReservation(
+					db,
+					size,
+					actualDate
+				);
+				// eslint-disable-next-line
+				const tablesWithOrder = await getTablesWithOrders(
+					db,
+					size,
+					actualDate
+				);
+				Array.prototype.push.apply(tablesWithRes, tablesWithOrder);
+
+				const allIdTablesBusy = tablesWithRes.map((t) => t.id);
+				const availableTables = allTables.filter(
+					({ id }) => !allIdTablesBusy.includes(id)
+				);
+
+				if (availableTables.length > 0) {
+					availableTimes.push({
+						time: times[i],
+						tableId: availableTables[0].id,
+					});
+				}
+			}
+
+			return availableTimes;
+		},
+	},
 	Mutation: {
 		createTable: (parent, { table }, { db }) => db.table.create(table),
 		updateTable: (parent, { id, table }, { db }) =>

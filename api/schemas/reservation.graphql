@@ -7,6 +7,7 @@ type Reservation {
 	reservationDateTime: DateTime!
 	cancelationDateTime: DateTime
 	table: Table!
+	order: Order
 }
 
 # Inputs
@@ -23,11 +24,11 @@ input ReservationInput {
 type Query {
 	reservation(id: ID!): Reservation
 	reservations: [Reservation!]!
-	reservationsBySize(size: Int!): [DateTime]
+	getNextTableReservations(tableId: ID!): [Reservation]
 }
 
 type Mutation {
 	createReservation(reservation: ReservationInput!): Reservation
 	updateReservation(id: ID!, reservation: ReservationInput!): Reservation
-	deleteReservation(id: ID!): Int!
+	cancelReservation(id: ID!): [Int!]
 }

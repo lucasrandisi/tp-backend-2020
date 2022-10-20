@@ -1,0 +1,36 @@
+# lo que devuelve
+type User {
+	id: ID!
+	username: String!
+	password: String!
+	email: String!
+}
+
+type Token {
+	token: String
+}
+
+type Query {
+	#users: [User!]!
+	user(id: ID!): User
+}
+
+type Mutation {
+	registerUser(input: UserInput!): User
+	login(input: LoginInput!): Token
+	#deleteStaff(id: ID!): Int
+	#updateStaff(id: ID!, staff: StaffInput!): Staff
+}
+
+# Input
+# lo que puedo enviar
+input UserInput {
+	username: String!
+	password: String!
+	email: String!
+}
+
+input LoginInput {
+	email: String!
+	password: String!
+}
