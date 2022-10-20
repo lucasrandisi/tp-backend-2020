@@ -16,10 +16,16 @@ type Query {
 	table(id: ID!): Table
 	tables: [Table!]!
 	max_table: Int!
+	tablesAvailableByDateSize(date: DateTime, size: Int): [TimeTable]
 }
 
 type Mutation {
 	createTable(table: TableInput!): Table
 	updateTable(id: ID!, table: TableInput!): Table
 	deleteTable(id: ID!): Int
+}
+
+type TimeTable {
+	tableId: Int!
+	time: String!
 }

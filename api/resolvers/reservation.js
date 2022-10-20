@@ -2,6 +2,8 @@ export default {
 	Reservation: {
 		table: ({ tableId }, args, { db }) =>
 			db.table.findOne({ where: { id: tableId } }),
+		order: ({ id }, args, { db }) =>
+			db.order.findOne({ where: { reservationId: id } }),
 	},
 	Query: {
 		reservation: (parent, { id }, { db }) => db.reservation.findByPk(id),
@@ -25,9 +27,10 @@ export default {
 			return updated;
 		},
 
-		deleteReservation: (parent, { id }, { db }) =>
-			db.reservation.destroy({
-				where: { id },
-			}),
+		cancelReservation: (parent, { id }, { db }) =>
+			db.reservation.update(
+				{ cancelationDateTime: new Date() },
+				{ where: { id } }
+			),
 	},
 };

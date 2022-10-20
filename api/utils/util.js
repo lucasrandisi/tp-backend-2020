@@ -1,14 +1,6 @@
 import moment from 'moment';
 import { Op } from 'sequelize';
 
-export const getCurrentDate = () => {
-	return moment().subtract(3, 'hours');
-};
-
-export const getDate = (date) => {
-	return moment(date).subtract(3, 'hours');
-};
-
 export function getTablesWithOrders(db, size, date) {
 	return db.table.findAll({
 		where: {
@@ -24,8 +16,8 @@ export function getTablesWithOrders(db, size, date) {
 						{ paidAt: null },
 						{
 							createdAt: {
-								[Op.lt]: getDate(date).add(3, 'hours'),
-								[Op.gt]: getDate(date).subtract(3, 'hours'),
+								[Op.lt]: moment(date).add(3, 'hours'),
+								[Op.gt]: moment(date).subtract(3, 'hours'),
 							},
 						},
 						db.sequelize.where(
@@ -33,7 +25,7 @@ export function getTablesWithOrders(db, size, date) {
 								'date',
 								db.sequelize.col('createdAt')
 							),
-							getDate(date).format('YYYY-MM-DD')
+							moment(date).format('YYYY-MM-DD')
 						),
 					],
 				},
@@ -57,8 +49,8 @@ export function getTablesWithReservation(db, size, date) {
 						{ cancelationDateTime: null },
 						{
 							reservationDateTime: {
-								[Op.lt]: getDate(date).add(3, 'hours'),
-								[Op.gt]: getDate(date).subtract(3, 'hours'),
+								[Op.lt]: moment(date).add(3, 'hours'),
+								[Op.gt]: moment(date).subtract(3, 'hours'),
 							},
 						},
 						db.sequelize.where(
@@ -66,7 +58,7 @@ export function getTablesWithReservation(db, size, date) {
 								'date',
 								db.sequelize.col('reservationDateTime')
 							),
-							getDate(date).format('YYYY-MM-DD')
+							moment(date).format('YYYY-MM-DD')
 						),
 					],
 				},

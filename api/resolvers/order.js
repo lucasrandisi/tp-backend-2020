@@ -1,5 +1,3 @@
-import { getCurrentDate } from '../utils/util';
-
 export default {
 	Order: {
 		table: ({ tableId }, args, { db }) =>
@@ -26,19 +24,18 @@ export default {
 				return db.order.create({
 					reservationId: resId,
 					tableId,
-					createdAt: getCurrentDate(),
+					createdAt: Date.now(),
 				});
-			} 
-				return db.order.create({
-					tableId,
-					createdAt: getCurrentDate(),
-				});
-			
+			}
+			return db.order.create({
+				tableId,
+				createdAt: Date.now(),
+			});
 		},
 		closeOrder: (_, { id }, { db }) =>
 			db.order.update(
 				{
-					paidAt: getCurrentDate(),
+					paidAt: Date.now(),
 				},
 				{
 					where: { id },

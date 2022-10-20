@@ -1,7 +1,6 @@
 import { Op } from 'sequelize';
 import moment from 'moment';
 import {
-	getCurrentDate,
 	allTimes,
 	getTablesWithOrders,
 	getTablesWithReservation,
@@ -21,8 +20,8 @@ export default {
 						tableId: parent.id,
 						cancelationDateTime: null,
 						reservationDateTime: {
-							[Op.lt]: getCurrentDate().add(3, 'hours'),
-							[Op.gt]: getCurrentDate().subtract(1, 'hours'),
+							[Op.lt]: moment().add(3, 'hours'),
+							[Op.gt]: moment().subtract(1, 'hours'),
 						},
 					},
 					db.sequelize.where(db.sequelize.col('order.id'), null),
@@ -59,7 +58,8 @@ export default {
 
 			let times = [...allTimes];
 
-			if (date === moment().format('YYYY-MM-DD')) {
+			const onlyDate = moment(date).format('YYYY-MM-DD');
+			if (onlyDate === moment().format('YYYY-MM-DD')) {
 				const actualTime = moment().format('HH:mm');
 				times = allTimes.filter((t) => t > actualTime);
 			}
@@ -68,7 +68,7 @@ export default {
 
 			// eslint-disable-next-line
 			for (let i = 0; i < times.length; i++) {
-				const actualDate = `${date} ${times[i]}`;
+				const actualDate = `${onlyDate} ${times[i]}`;
 				// eslint-disable-next-line
 				const tablesWithRes = await getTablesWithReservation(
 					db,
