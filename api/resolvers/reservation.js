@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default {
 	Reservation: {
 		table: ({ tableId }, args, { db }) =>
@@ -8,6 +10,19 @@ export default {
 	Query: {
 		reservation: (parent, { id }, { db }) => db.reservation.findByPk(id),
 		reservations: (parent, args, { db }) => db.reservation.findAll(),
+		getNextTableReservations: (parent, { tableId }, { db }) =>
+			db.reservation.findAll({
+				where: [
+					{ tableId },
+					db.sequelize.where(
+						db.sequelize.fn(
+							'date',
+							db.sequelize.col('reservationDateTime')
+						),
+						moment().format('YYYY-MM-DD')
+					),
+				],
+			}),
 	},
 
 	Mutation: {
