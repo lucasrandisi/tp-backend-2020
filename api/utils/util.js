@@ -73,7 +73,11 @@ export const calculateTimes = () => {
 	for (let i = 8; i < 24; i++) {
 		// eslint-disable-next-line
 		for (let j = 0; j < 2; j++) {
-			allTimes.push(`${i}:${j === 0 ? `00` : 30 * j}`);
+			if (i < 10) {
+				allTimes.push(`0${i}:${j === 0 ? `00` : 30 * j}`);
+			} else {
+				allTimes.push(`${i}:${j === 0 ? `00` : 30 * j}`);
+			}
 		}
 	}
 	return allTimes;
