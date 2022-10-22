@@ -11,7 +11,7 @@ import path from 'path';
 import { GraphQLError } from 'graphql';
 import { shield, rule } from 'graphql-shield';
 import db from './models';
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 require('dotenv').config();
 
@@ -24,17 +24,10 @@ const resolvers = mergeResolvers(
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-// ##################################################
-// autorizacion de usuario: para que funcione descomentar cuando se suba a master
-// const isAuthenticated = rule()(async (parent, args, ctx, inf) => {
-// 	return !!jwt.verify(ctx.headers["token"], process.env.SECRET_KEY)
-// })
+const isAuthenticated = rule()(async (parent, args, ctx, inf) => {
+	return !!jwt.verify(ctx.headers["token"], process.env.SECRET_KEY)
+})
 
-const isAuthenticated = rule()(async () => {
-	return true;
-});
-
-// ##################################################
 const permissions = shield({
 	Query: { '*': isAuthenticated },
 	Mutation: { '*': isAuthenticated },
