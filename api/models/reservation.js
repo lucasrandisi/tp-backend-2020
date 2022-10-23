@@ -26,7 +26,11 @@ module.exports = (sequelize, DataTypes) => {
 		cancelationDateTime: {
 			type: DataTypes.DATE,
 		},
-	});
+    },
+    {
+        timestamps: false
+    }
+    );
 
 	Reservation.associate = (models) => {
 		Reservation.belongsTo(models.table);

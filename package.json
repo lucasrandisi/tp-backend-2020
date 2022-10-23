@@ -5,11 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "nodemon --exec babel-node api/server.js",
-		"create bd": "cd api/ && npx sequelize-cli db:create",
-		"drop bd": "cd api/ && npx sequelize-cli db:drop",
-		"build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
+		"db:create": "cd api/ && npx sequelize-cli db:create",
+		"db:drop": "cd api/ && npx sequelize-cli db:drop",
 		"db:seed": "cd api/ && npx sequelize-cli db:seed:all",
-		"db:seed:undo": "cd api/ && npx sequelize-cli db:seed:undo:all"
+		"db:seed-undo": "cd api/ && npx sequelize-cli db:seed:undo:all",
+		"build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js "
 	},
 	"repository": {
 		"type": "git",

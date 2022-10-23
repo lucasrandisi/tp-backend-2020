@@ -59,25 +59,25 @@ export default {
 
 			let times = [...allTimes];
 
+            // Si la fecha seleccionada es la de hoy, filtrar horarios menores a la hora actual
 			const onlyDate = moment(date).format('YYYY-MM-DD');
-			if (onlyDate === moment().format('YYYY-MM-DD')) {
+			if (onlyDate.isSame(moment(), 'day')) {
 				const actualTime = moment().format('HH:mm');
 				times = allTimes.filter((t) => t > actualTime);
 			}
 
 			const availableTimes = [];
 
-			// eslint-disable-next-line
 			for (let i = 0; i < times.length; i++) {
 				const actualDate = `${onlyDate} ${times[i]}`;
-				// eslint-disable-next-line
-				const tablesWithRes = await getTablesWithReservation(
+
+                const tablesWithRes = await getTablesWithReservation(
 					db,
 					size,
 					actualDate
 				);
-				// eslint-disable-next-line
-				const tablesWithOrder = await getTablesWithOrders(
+
+                const tablesWithOrder = await getTablesWithOrders(
 					db,
 					size,
 					actualDate

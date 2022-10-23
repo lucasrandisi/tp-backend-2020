@@ -6,7 +6,6 @@ type Item {
 	servings: Float
 	pricePerUnit: Float
 	categories: [Category!]!
-	ingredients: [Ingredient!]!
 }
 
 type Query {
@@ -27,16 +26,4 @@ input itemInput {
 	servings: Int
 	pricePerUnit: Int
 	categoriesId: [ID!]
-	ingredientsId: [ID!]
-}
-
-input itemEditInput {
-	id: ID!
-	title: String
-	desc: String
-	cookTime: Int
-	servings: Float
-	pricePerUnit: Float
-	categoriesId: [ID!]
-	ingredientsId: [ID!]
 }

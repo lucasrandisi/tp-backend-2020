@@ -6,11 +6,8 @@ export default {
 			db.reservation.findOne({ where: { id: reservationId } }),
 		lines: (parent, args, { db }) =>
 			db.line.findAll({ where: { orderId: parent.id } }),
-		staff: ({ staffId }, args, { db }) =>
-			db.staff.findOne({ where: { id: staffId } }),
 		status: (parent) => {
 			if (parent.paidAt) return 'PAID';
-			if (parent.closedAt) return 'CLOSED';
 			return 'OPEN';
 		},
 	},

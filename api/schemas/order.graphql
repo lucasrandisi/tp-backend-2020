@@ -3,17 +3,13 @@ type Order {
 	lines: [OrderLine]
 	reservation: Reservation
 	table: Table
-	staff: Staff
-
 	status: OrderStatus
 	createdAt: DateTime
-	closedAt: DateTime
 	paidAt: DateTime
 }
 
 enum OrderStatus {
 	OPEN
-	CLOSED
 	PAID
 }
 

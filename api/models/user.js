@@ -19,7 +19,11 @@ export default (sequelize, DataTypes) => {
 			allowNull: false,
 			unique: true,
 		},
-	});
+    },
+    {
+        updatedAt: false,
+    }
+    );
 
 	return User;
 };
