@@ -20,9 +20,9 @@ type Mutation {
 }
 
 input ItemInput {
-	title: String!
-	desc: String!   
-	servings: Int!
-	pricePerUnit: Int!
-	categoriesId: [ID!]
+	title: String
+	desc: String
+	servings: Int
+	pricePerUnit: Int
+	categoriesId: [ID]
 }

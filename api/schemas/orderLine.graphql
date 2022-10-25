@@ -1,6 +1,6 @@
 type OrderLine {
 	id: ID!
-	item: Item!
+	item: Item
 	order: Order!
 	quantity: Int
 }
