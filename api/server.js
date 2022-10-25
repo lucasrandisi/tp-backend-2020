@@ -24,6 +24,10 @@ const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers'))
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const isAuthenticated = rule()(async (parent, args, ctx, inf) => {
+
+	if (inf.fieldName === 'registerUser' || inf.fieldName === 'login'){
+		return true
+	}
 	return !!jwt.verify(ctx.headers["token"], process.env.SECRET_KEY)
 })
 
