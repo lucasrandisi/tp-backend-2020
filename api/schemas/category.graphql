@@ -10,7 +10,7 @@ type Query {
 }
 
 type Mutation {
-	createCategory(desc: String): Category!
-	updateCategory(id: ID!, desc: String): [Int!]!
+	createCategory(desc: String!): Category!
+	updateCategory(id: ID!, desc: String!): Category!
 	deleteCategory(id: ID!): Int!
 }

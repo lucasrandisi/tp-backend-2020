@@ -3,17 +3,13 @@ type Order {
 	lines: [OrderLine]
 	reservation: Reservation
 	table: Table
-	staff: Staff
-
 	status: OrderStatus
 	createdAt: DateTime
-	closedAt: DateTime
 	paidAt: DateTime
 }
 
 enum OrderStatus {
 	OPEN
-	CLOSED
 	PAID
 }
 
@@ -24,6 +20,6 @@ type Query {
 
 type Mutation {
 	createOrder(tableId: ID, resId: ID): Order!
-	closeOrder(id: ID!): [Int]!
+	closeOrder(id: ID!): Order!
 	deleteOrder(id: [ID!]): Int!
 }

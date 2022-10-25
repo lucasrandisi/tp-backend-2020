@@ -9,16 +9,12 @@ export default (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 		},
-		customerComments: DataTypes.STRING,
-		createdAt: {
-			type: DataTypes.DATE,
-			defaultValue: sequelize.NOW,
-		},
-		canceledAt: DataTypes.DATE,
-		startedAt: DataTypes.DATE,
-		finishedAt: DataTypes.DATE,
-		deliveredAt: DataTypes.DATE,
-	});
+    },
+    {
+        tableName: 'lines',
+        timestamps: false
+    }
+    );
 
 	OrderLine.associate = (models) => {
 		OrderLine.belongsTo(models.order);

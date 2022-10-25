@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql';
+
 export default {
 	Order: {
 		table: ({ tableId }, args, { db }) =>
@@ -6,11 +8,8 @@ export default {
 			db.reservation.findOne({ where: { id: reservationId } }),
 		lines: (parent, args, { db }) =>
 			db.line.findAll({ where: { orderId: parent.id } }),
-		staff: ({ staffId }, args, { db }) =>
-			db.staff.findOne({ where: { id: staffId } }),
 		status: (parent) => {
 			if (parent.paidAt) return 'PAID';
-			if (parent.closedAt) return 'CLOSED';
 			return 'OPEN';
 		},
 	},
@@ -19,28 +18,43 @@ export default {
 		order: (parent, { id }, { db }) => db.order.findByPk(id),
 	},
 	Mutation: {
-		createOrder: (parent, { tableId, resId }, { db }) => {
-			if (resId !== 'undefined') {
-				return db.order.create({
-					reservationId: resId,
-					tableId,
-					createdAt: Date.now(),
-				});
-			}
-			return db.order.create({
-				tableId,
-				createdAt: Date.now(),
-			});
+        createOrder: async (parent, { tableId, resId }, { db }) => {
+            const table = await db.table.findByPk(tableId);
+            
+            if (!table) {
+                throw new GraphQLError('Table not found');
+            }
+
+            if (resId) {
+                const reservation = await db.reservation.findByPk(resId);
+
+                if (!reservation) {
+                    throw new GraphQLError('Reservation not found');
+                }
+            }
+
+            return db.order.create({
+                tableId,
+                ...(resId && { reservationId: resId }),
+                createdAt: Date.now(),
+            });
 		},
-		closeOrder: (_, { id }, { db }) =>
-			db.order.update(
-				{
-					paidAt: Date.now(),
-				},
-				{
-					where: { id },
-				}
-			),
+        closeOrder: async (_, { id }, { db }) => {
+            const order = await db.order.findByPk(id);
+
+            if (!order) {
+                throw new GraphQLError('Order not found');
+            }
+
+            return await order.update(
+                {
+                    paidAt: Date.now(),
+                },
+                {
+                    where: { id },
+                }
+            )
+        },
 		deleteOrder: (parent, { id }, { db }) =>
 			db.order.destroy({ where: { id } }),
 	},

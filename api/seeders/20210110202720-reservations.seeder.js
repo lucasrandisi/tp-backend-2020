@@ -14,8 +14,6 @@ module.exports = {
 					.set(time)
 					.toDate(),
 				tableId: 1,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3412008765',
 				email: 'lucas@hotmail.com',
 			},
@@ -28,8 +26,6 @@ module.exports = {
 					.set(halfTime)
 					.toDate(),
 				tableId: 2,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3419887878',
 				email: 'agustin@hotmail.com',
 			},
@@ -42,8 +38,6 @@ module.exports = {
 					.set(time)
 					.toDate(),
 				tableId: 3,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3412008603',
 				email: 'natalia@hotmail.com',
 			},
@@ -56,8 +50,6 @@ module.exports = {
 					.set(halfTime)
 					.toDate(),
 				tableId: 1,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3412887656',
 				email: 'francisco@hotmail.com',
 			},
@@ -70,8 +62,6 @@ module.exports = {
 					.set(time)
 					.toDate(),
 				tableId: 4,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3412887622',
 				email: 'julia@hotmail.com',
 			},
@@ -84,8 +74,6 @@ module.exports = {
 					.set(halfTime)
 					.toDate(),
 				tableId: 5,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3412007622',
 				email: 'cholo@hotmail.com',
 			},
@@ -95,8 +83,6 @@ module.exports = {
 				partySize: 4,
 				reservationDateTime: moment().add(2, 'days').set(time).toDate(),
 				tableId: 6,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				phone: '3412111622',
 				email: 'tito@hotmail.com',
 			},
@@ -109,8 +95,6 @@ module.exports = {
 			// 		.set(halfTime)
 			// 		.toDate(),
 			// 	tableId: 7,
-			// 	createdAt: new Date(),
-			// 	updatedAt: new Date(),
 			// 	phone: '3413333622',
 			// 	email: 'hernan@hotmail.com',
 			// },

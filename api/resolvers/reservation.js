@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { GraphQLError } from 'graphql';
 
 export default {
 	Reservation: {
@@ -10,42 +11,64 @@ export default {
 	Query: {
 		reservation: (parent, { id }, { db }) => db.reservation.findByPk(id),
 		reservations: (parent, args, { db }) => db.reservation.findAll(),
-		getNextTableReservations: (parent, { tableId }, { db }) =>
-			db.reservation.findAll({
-				where: [
-					{ tableId },
-					db.sequelize.where(
-						db.sequelize.fn(
-							'date',
-							db.sequelize.col('reservationDateTime')
-						),
-						moment().format('YYYY-MM-DD')
-					),
-				],
-			}),
+        getNextTableReservations: async (parent, { tableId }, { db }) => {
+            const table = await db.table.findByPk(tableId);
+
+            if (!table) {
+                throw new GraphQLError("Table not found");
+            }
+
+            return db.reservation.findAll({
+                where: [
+                    { tableId },
+                    db.sequelize.where(
+                        db.sequelize.fn(
+                            'date',
+                            db.sequelize.col('reservationDateTime')
+                        ),
+                        moment().format('YYYY-MM-DD')
+                    ),
+                ],
+            });
+        }
 	},
 
 	Mutation: {
-		createReservation: (parent, { reservation }, { db }) =>
-			db.reservation.create(reservation),
-		updateReservation: async (parent, { id, reservation }, { db }) => {
-			const table = await db.table.findByPk(reservation.tableId);
+        createReservation: async (parent, { reservationInput }, { db }) => {
+            const table = await db.table.findByPk(reservationInput.tableId);
+
+            if (!table) {
+                throw new GraphQLError("Table not found");
+            }
+
+            return db.reservation.create(reservationInput)
+        },
+        updateReservation: async (parent, { id, reservationInput }, { db }) => {
+            const reservation = await db.reservation.findByPk(id);
+
+            if (!reservation) {
+                throw new GraphQLError("Reservation not found");
+            }
+
+            const table = await db.table.findByPk(reservationInput.tableId);
 
 			if (!table) {
-				// ToDo: Throw Exception table not found.
+                throw new GraphQLError("Table not found");
 			}
 
-			await db.reservation.update(reservation, {
-				where: { id },
-			});
-			const updated = await db.reservation.findByPk(reservation.tableId);
-			return updated;
-		},
+            return reservation.update(reservationInput)
+    		},
 
-		cancelReservation: (parent, { id }, { db }) =>
-			db.reservation.update(
-				{ cancelationDateTime: new Date() },
-				{ where: { id } }
-			),
+        cancelReservation: async (parent, { id }, { db }) => {
+            const reservation = await db.reservation.findByPk(id);
+
+            if (!reservation) {
+                throw new GraphQLError("Reservation not found");
+            }
+    
+            return reservation.update({
+                cancelationDateTime: new Date()
+            });
+        }
 	},
 };

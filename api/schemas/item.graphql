@@ -1,0 +1,28 @@
+type Item {
+	id: ID!
+	title: String!
+	desc: String
+	cookTime: Int
+	servings: Float
+	pricePerUnit: Float
+	categories: [Category!]!
+}
+
+type Query {
+	items: [Item!]!
+	item(id: ID!): Item
+}
+
+type Mutation {
+	createItem(itemInput: ItemInput!): Item!
+	updateItem(id: ID!, itemInput: ItemInput!): Item!
+	deleteItem(id: ID!): Int!
+}
+
+input ItemInput {
+	title: String!
+	desc: String!   
+	servings: Int!
+	pricePerUnit: Int!
+	categoriesId: [ID!]
+}

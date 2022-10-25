@@ -18,9 +18,8 @@ require('dotenv').config();
 process.env.TZ = 'America/Argentina/Buenos_Aires';
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schemas')));
-const resolvers = mergeResolvers(
-	fileLoader(path.join(__dirname, './resolvers'))
-);
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')));
+
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 

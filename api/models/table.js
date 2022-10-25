@@ -9,9 +9,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		}
-	}, {
+    },
+    {
 		timestamps: false
-	});
+    }
+    );
 
 	Table.associate = (models) => {
 		Table.hasMany(models.reservation);

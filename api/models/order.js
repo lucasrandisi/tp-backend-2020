@@ -9,14 +9,15 @@ export default (sequelize, DataTypes) => {
 			type: DataTypes.DATE,
 			defaultValue: sequelize.NOW,
 		},
-		closedAt: DataTypes.DATE,
 		paidAt: DataTypes.DATE,
-	});
+    },
+    {
+        updatedAt: false,
+    });
 
 	Order.associate = (models) => {
 		Order.hasMany(models.line);
 		Order.belongsTo(models.table);
-		Order.belongsTo(models.staff);
 		Order.belongsTo(models.reservation);
 	};
 

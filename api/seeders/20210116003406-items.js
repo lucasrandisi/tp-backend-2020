@@ -7,8 +7,6 @@ module.exports = {
 				desc: 'Sopa de calabaza',
 				pricePerUnit: 200,
 				servings: 2,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 2,
@@ -16,8 +14,6 @@ module.exports = {
 				desc: 'Sopa de pollo',
 				pricePerUnit: 190,
 				servings: 2,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 3,
@@ -25,8 +21,6 @@ module.exports = {
 				desc: 'Con pechuga de pollo',
 				pricePerUnit: 170,
 				servings: 2,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 4,
@@ -34,8 +28,6 @@ module.exports = {
 				desc: 'Con mariscos',
 				pricePerUnit: 300,
 				servings: 2,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 5,
@@ -43,8 +35,6 @@ module.exports = {
 				desc: 'De papa',
 				pricePerUnit: 230,
 				servings: 2,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 6,
@@ -52,8 +42,6 @@ module.exports = {
 				desc: 'Con queso cheddar',
 				servings: 3,
 				pricePerUnit: 130,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 7,
@@ -61,8 +49,6 @@ module.exports = {
 				desc: 'Con guarnicion',
 				servings: 1,
 				pricePerUnit: 200,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 8,
@@ -70,8 +56,6 @@ module.exports = {
 				desc: 'Completo',
 				servings: 4,
 				pricePerUnit: 350,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 9,
@@ -79,8 +63,6 @@ module.exports = {
 				desc: 'Bifes a la portuguesa',
 				servings: 4,
 				pricePerUnit: 300,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 10,
@@ -88,8 +70,6 @@ module.exports = {
 				desc: 'Agua Mineral',
 				pricePerUnit: 100,
 				servings: 1,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 11,
@@ -97,8 +77,6 @@ module.exports = {
 				desc: 'Seven Up 250ml',
 				pricePerUnit: 180,
 				servings: 1,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 			{
 				id: 12,
@@ -106,8 +84,6 @@ module.exports = {
 				desc: 'Coca cola 250ml',
 				pricePerUnit: 180,
 				servings: 1,
-				createdAt: new Date(),
-				updatedAt: new Date(),
 			},
 		]);
 	},

@@ -7,17 +7,19 @@ export default (sequelize, DataTypes) => {
 		},
 		title: DataTypes.STRING,
 		desc: DataTypes.STRING,
-		cookTime: DataTypes.INTEGER,
 		servings: DataTypes.REAL,
 		pricePerUnit: DataTypes.REAL,
-	});
+    },
+    {
+        timestamps: false
+    }
+    );
 
 	Item.associate = async (models) => {
 		Item.belongsToMany(models.category, { through: 'categories_items' });
 
 		Item.hasMany(models.line);
 
-		Item.belongsToMany(models.ingredient, { through: 'ingredients_items' });
 	};
 
 	return Item;

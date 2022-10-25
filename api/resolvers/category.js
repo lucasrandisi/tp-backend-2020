@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql';
+
 export default {
 	Category: {
 		items: ({ id }, args, { db }) =>
@@ -19,17 +21,15 @@ export default {
 			db.category.create({
 				desc,
 			}),
-		updateCategory: (parent, { desc, id }, { db }) =>
-			db.category.update(
-				{
-					desc,
-				},
-				{
-					where: {
-						id,
-					},
-				}
-			),
+        updateCategory: (parent, { desc, id }, { db }) =>
+            db.category.findByPk(id)
+                .then(async (category) => {
+                    if (!category) {
+                        throw new GraphQLError('Category not found');
+                    }
+
+                    return category.update({desc: desc})
+                }),
 		deleteCategory: (parent, { id }, { db }) =>
 			db.category.destroy({
 				where: {
