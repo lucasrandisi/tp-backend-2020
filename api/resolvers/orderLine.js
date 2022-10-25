@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql';
+
 export default {
 	OrderLine: {
 		item: ({ itemId }, args, { db }) =>
@@ -10,7 +12,21 @@ export default {
 		line: (parent, { id }, { db }) => db.line.findByPk(id),
 	},
 	Mutation: {
-		createLine: (parent, { line }, { db }) => db.line.create(line),
+        createLine: async (parent, { lineInput }, { db }) => {
+            const order = await db.order.findByPk(lineInput.orderId);
+
+            if (!order) {
+                throw new GraphQLError('Order not found');
+            }
+
+            const item = await db.item.findByPk(lineInput.itemId);
+
+            if (!item) {
+                throw new GraphQLError('Item not found');
+            }
+
+            return db.line.create(lineInput)
+        },
 		deleteLine: (parent, { id }, { db }) =>
 			db.line.destroy({ where: { id } }),
 	},

@@ -7,7 +7,6 @@ export default (sequelize, DataTypes) => {
 		},
 		title: DataTypes.STRING,
 		desc: DataTypes.STRING,
-		cookTime: DataTypes.INTEGER,
 		servings: DataTypes.REAL,
 		pricePerUnit: DataTypes.REAL,
     },

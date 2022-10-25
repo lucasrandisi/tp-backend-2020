@@ -11,11 +11,11 @@ type Query {
 }
 
 type Mutation {
-	createLine(line: lineInput!): OrderLine
+	createLine(lineInput: LineInput!): OrderLine!
 	deleteLine(id: ID!): Int!
 }
 
-input lineInput {
+input LineInput {
 	orderId: ID!
 	itemId: ID!
 	quantity: Int!

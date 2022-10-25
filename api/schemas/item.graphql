@@ -14,16 +14,15 @@ type Query {
 }
 
 type Mutation {
-	createItem(item: itemInput!): Item!
-	updateItem(id: ID!, itemInput: itemInput!): Item
+	createItem(itemInput: ItemInput!): Item!
+	updateItem(id: ID!, itemInput: ItemInput!): Item!
 	deleteItem(id: ID!): Int!
 }
 
-input itemInput {
-	title: String
-	desc: String
-	cookTime: Int
-	servings: Int
-	pricePerUnit: Int
+input ItemInput {
+	title: String!
+	desc: String!   
+	servings: Int!
+	pricePerUnit: Int!
 	categoriesId: [ID!]
 }

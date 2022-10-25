@@ -20,6 +20,6 @@ type Query {
 
 type Mutation {
 	createOrder(tableId: ID, resId: ID): Order!
-	closeOrder(id: ID!): [Int]!
+	closeOrder(id: ID!): Order!
 	deleteOrder(id: [ID!]): Int!
 }

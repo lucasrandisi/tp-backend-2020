@@ -5,6 +5,8 @@ import {
 	getTablesWithOrders,
 	getTablesWithReservation,
 } from '../utils/util';
+import { GraphQLError } from 'graphql';
+
 
 export default {
 	Table: {
@@ -20,7 +22,7 @@ export default {
 						tableId: parent.id,
 						cancelationDateTime: null,
 						reservationDateTime: {
-							[Op.lt]: moment().add(3, 'hours'),
+							[Op.lt]: moment().add(8, 'hours'),
 							[Op.gt]: moment().subtract(1, 'hours'),
 						},
 					},
@@ -60,7 +62,7 @@ export default {
 			let times = [...allTimes];
 
             // Si la fecha seleccionada es la de hoy, filtrar horarios menores a la hora actual
-			const onlyDate = moment(date).format('YYYY-MM-DD');
+			const onlyDate = moment(date);
 			if (onlyDate.isSame(moment(), 'day')) {
 				const actualTime = moment().format('HH:mm');
 				times = allTimes.filter((t) => t > actualTime);
@@ -69,7 +71,7 @@ export default {
 			const availableTimes = [];
 
 			for (let i = 0; i < times.length; i++) {
-				const actualDate = `${onlyDate} ${times[i]}`;
+                const actualDate = `${onlyDate.format('YYYY-MM-DD') } ${times[i]}`;
 
                 const tablesWithRes = await getTablesWithReservation(
 					db,
@@ -101,11 +103,16 @@ export default {
 		},
 	},
 	Mutation: {
-		createTable: (parent, { table }, { db }) => db.table.create(table),
-		updateTable: (parent, { id, table }, { db }) =>
-			db.table
-				.update(table, { where: { id } })
-				.then(() => db.table.findByPk(id)),
+        createTable: (parent, { tableInput }, { db }) => db.table.create(tableInput),
+        updateTable: async (parent, { id, tableInput }, { db }) => {
+            const table = await db.table.findByPk(id);
+            
+            if (!table) {
+                throw new GraphQLError("Table not found");
+            }
+
+            return table.update(...tableInput)
+        },
 		deleteTable: (parent, { id }, { db }) =>
 			db.table.destroy({
 				where: {
