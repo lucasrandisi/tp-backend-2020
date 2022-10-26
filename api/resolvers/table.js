@@ -22,7 +22,7 @@ export default {
 						tableId: parent.id,
 						cancelationDateTime: null,
 						reservationDateTime: {
-							[Op.lt]: moment().add(8, 'hours'),
+							[Op.lt]: moment().add(3, 'hours'),
 							[Op.gt]: moment().subtract(1, 'hours'),
 						},
 					},
