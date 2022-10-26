@@ -3,7 +3,7 @@
     "username": "root",
     "password": "root",
     "database": "restaurant",
-    "host": "localhost",
+    "host": "mysql",
     "dialect": "mysql",
     "operatorsAliases": false,
     "dialectOptions": {
